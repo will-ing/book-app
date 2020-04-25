@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Person</title>
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Person Details</h1>
+  </header>
+  <main>
+    <div>Name: <%= index.name %> </div>
+    <div>Hair: <%= index.hairStyle %> </div>
+    <ul>
+      <% index.kids.forEach(kid => { %>
+      <li> <%= kid %> </li>
+      <% }) %>
+    </ul>
+  </main>
+  <footer>
+    &copy; 2020
+  </footer>
+
+  
+</body>
+</html>

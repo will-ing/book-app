@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Book</title>
+</head>
+<body>
+  <header>
+    <h1>find a books</h1>
+  </header>
+  <main>
+    <form method="post" action="/search"></form>
+    <div>
+      <input name="ssearch" placeholder="search Terms">  
+    </div>
+    <div>
+      <label>
+        <input type="radio" name="searchby" value="inauthor">
+        search By Author
+      </label>
+      <label>
+        <input type="radio" name="searchby" value="intitle">
+        search By title
+      </label>
+      <button type="submit">Find Books!</button>
+    </div>
+    <button></button>
+  </main>
+</body>
+</html>
