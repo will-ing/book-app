@@ -28,30 +28,30 @@ app.get('/', (req, res) => {
    }
 })
 
-app.get('/person', (req, res) => {
-  try{
-    let data = {
-      name: req.query.name,
-      hairstyle: req.query.hair,
-      kids: ['Zach', 'Allie'],
-    }
-    res.status(200).render('pages/index.ejs', {index:data})
-  }
-  catch{
-    throw new Error('string');
-  }
+// app.get('/books', (req, res) => {
+//   try{
+//     let data = {
+//       name: req.query.name,
+//       hairstyle: req.query.hair,
+//       kids: ['Zach', 'Allie'],
+//     }
+//     res.status(200).render('pages/show.ejs', {index:data})
+//   }
+//   catch{
+//     throw new Error('string');
+//   }
 
-})
+// })
 
 // --------------- new stuff ---------- //
 
 app.get('/searchForm' , (req, res) => {
-  res.status(200).render('pages/index.ejs')
+  res.status(200).render('pages/searches/show.ejs')
 })
 
 app.post('/search', (req, res) => {
   console.log(req.body)
-  res.status(200).render('pages/search/show.ejs')
+  res.status(200).render('pages/search/new.ejs')
   let url = 'https://www.googleapis.com/books/v1/volumes'
   let queryObject = {
     q: `${request.body.searchby}:${req.body.search}`
@@ -61,7 +61,7 @@ app.post('/search', (req, res) => {
     .query( queryObject )
     .then( results => {
       let books = results.body.items.map(book => new Book(book))
-      res.status(200).render('pages/searches/show.ejs', {books: results.body.items})
+      res.status(200).render('pages/searches/new.ejs', {books: results.body.items})
     })
 })
 

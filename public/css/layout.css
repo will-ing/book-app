@@ -1,0 +1,25 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+
+}
+
+button {
+
+}
+
+footer {
+
+}
