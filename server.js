@@ -50,25 +50,28 @@ app.get('/searchForm' , (req, res) => {
 })
 
 app.post('/search', (req, res) => {
-  console.log(req.body)
-  res.status(200).render('pages/search/new.ejs')
-  let url = 'https://www.googleapis.com/books/v1/volumes'
+
+  let url = 'https://www.googleapis.com/books/v1/volumes';
   let queryObject = {
-    q: `${request.body.searchby}:${req.body.search}`
+    q: `${req.body.searchby}:${req.body.search}`
   }
 
-  superagent.get(url)
+   superagent.get(url)
     .query( queryObject )
     .then( results => {
       let books = results.body.items.map(book => new Book(book))
-      res.status(200).render('pages/searches/new.ejs', {books: results.body.items})
+      console.log(books)
+      res.status(200).render('pages/searches/new.ejs', {books: books})
     })
 })
 
 function Book(data) {
   this.title = data.volumeInfo.title;
-  this.amount = data.saleInfo.listPrice ? data.saleInfo.listPrice.amount : false;
-  t
+  this.amount = data.saleInfo.listPrice ? data.saleInfo.listPrice.amount : 'no price listed';
+  this.author = data.author;
+  this.desc = data.description || 'Sorry just the cover'
+  // this.isbn = data.industryIdentifiers[0].identifier || 'does not exist'
+  this.img = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
 }
 
 // url('https://www.googleapis.com/books/v1/volumes?q=inauthor:${author}')
