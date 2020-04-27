@@ -1,0 +1,49 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+header {
+  height: 100px;
+  text-align: center;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
+
+  justify-content: space-around;
+}
+
+input {
+  display: flex;
+  justify-items: center;
+  justify-content: space-around;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+button {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+footer {
+  display: flex;
+  justify-content: space-around;
+
+}

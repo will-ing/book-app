@@ -27,5 +27,8 @@
     "no-undefined": "off",
     "quotes": ["warn", "single", {"allowTemplateLiterals": true}],
     "semi": "error"
+  },
+  "emmet.includeLanguages": {
+    "ejs": "html"
   }
 }
