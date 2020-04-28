@@ -15,8 +15,9 @@ app.use( express.urlencoded({extended:true}));
 
 app.use( express.static('./public') );
 
-app.get('/error', (req, res) => {
-  throw new Error('string');
+app.get('*', (req, res) => {
+  console.log(req);
+  res.status(404).send(`Page ${req.path} can't be found`)
 })
 
 app.get('/', (req, res) => {
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
     res.status(200).render('pages/index.ejs');
   }
   catch{ 
-    throw new Error('string');
+    res.status(404).send(`Page ${req.path} can't be found`);
    }
 })
 
