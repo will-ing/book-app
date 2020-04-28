@@ -7,5 +7,6 @@ main {
 }
 
 footer {
-  background-color: red;
+  background-color: rgba(19, 18, 18, 0.808);
+  color: white;
 }

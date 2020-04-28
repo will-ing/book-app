@@ -8,25 +8,28 @@
 </head>
 <body>
   <header>
-    <h1>find a books</h1>
+    <h1>Find Books</h1>
   </header>
   <main>
     <form method="post" action="/search">
-    <div>
+    <div class="search">
       <input name="search" placeholder="search Terms">  
     </div>
-    <div>
+    <div class="labels">
       <label>
         <input type="radio" name="searchby" value="inauthor">
-        search By Author
+        Search By Author
       </label>
       <label>
         <input type="radio" name="searchby" value="intitle">
-        search By title
+        Search By Title
       </label>
-      <button type="submit">Find Books!</button>
     </div>
+    <button type="submit">Find Books!</button>
   </form>
   </main>
+  <footer>
+    &copy; Book App Lesley & Will 2020
+  </footer>
 </body>
 </html>

@@ -60,7 +60,7 @@ app.post('/search', (req, res) => {
     .query( queryObject )
     .then( results => {
       let books = results.body.items.map(book => new Book(book))
-      console.log(books)
+      // console.log(books)
       res.status(200).render('pages/searches/new.ejs', {books: books})
     })
 })
@@ -68,9 +68,9 @@ app.post('/search', (req, res) => {
 function Book(data) {
   this.title = data.volumeInfo.title;
   this.amount = data.saleInfo.listPrice ? data.saleInfo.listPrice.amount : 'no price listed';
-  this.author = data.author;
-  this.desc = data.description || 'Sorry just the cover'
-  // this.isbn = data.industryIdentifiers[0].identifier || 'does not exist'
+  this.author = data.volumeInfo.authors;
+  this.desc = data.volumeInfo.description || 'Sorry just the cover'
+  this.isbn = data.volumeInfo.industryIdentifiers[0].identifier || 'does not exist'
   this.img = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
 }
 
