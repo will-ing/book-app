@@ -2,3 +2,8 @@
   box-sizing: border-box;
 }
 
+html {
+  margin: auto;
+  width: 360px;
+}
+
