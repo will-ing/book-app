@@ -15,11 +15,13 @@ app.use( express.urlencoded({extended:true}));
 
 app.use( express.static('./public') );
 
-app.get('*', (req, res) => {
-  console.log(req);
-  res.status(404).send(`Page ${req.path} can't be found`)
-})
 
+// app.get('*', (req, res) => {
+//   console.log(req);
+//   res.status(404).send(`Page ${req.path} can't be found`)
+// })
+
+// route to index page
 app.get('/', (req, res) => {
   try{
     res.status(200).render('pages/index.ejs');
@@ -29,27 +31,12 @@ app.get('/', (req, res) => {
    }
 })
 
-// app.get('/books', (req, res) => {
-//   try{
-//     let data = {
-//       name: req.query.name,
-//       hairstyle: req.query.hair,
-//       kids: ['Zach', 'Allie'],
-//     }
-//     res.status(200).render('pages/show.ejs', {index:data})
-//   }
-//   catch{
-//     throw new Error('string');
-//   }
-
-// })
-
-// --------------- new stuff ---------- //
-
+// route to the search form page
 app.get('/searchForm' , (req, res) => {
   res.status(200).render('pages/searches/show.ejs')
 })
 
+// This route is for the results
 app.post('/search', (req, res) => {
 
   let url = 'https://www.googleapis.com/books/v1/volumes';
@@ -78,9 +65,6 @@ function Book(data) {
 // url('https://www.googleapis.com/books/v1/volumes?q=inauthor:${author}')
 // https://developers.google.com/books/docs/v1/using
 
-
-
-// --------------- new stuff ---------- //
 
 /// handling errors ///
 
