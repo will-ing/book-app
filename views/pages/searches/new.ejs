@@ -1,41 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>seached books
-  </title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <header>
+<%- include('../partials/head.ejs') %>
 
-  </header>
-  <body>
-    <div>
-      <% books.forEach( book => { %>
-      <div>
+<body>
+  <%- include('../partials/header.ejs') %>
+
+
+  <main>
+    <% books.forEach( book => { %>
+    <div class="container">
+      <div class="title">
         <%= book.title %>
       </div> 
       <img src=<%= book.img %> alt=""> 
-      <h3>
-        <%= book.author %>
+      <h3 class="author">
+       By:<%= book.author %>
       </h3>
-      <p>
+      <p class="desc">
         <%= book.desc %>
       </p>
-      <p>
+      <p class="isbn">
         <%= book.isbn %>
       </p>
-      <p>
-        <%= book.amount %>
+      <p class="amount">
+        $<%= book.amount %>
       </p>
-      <% })  %>
     </div>
-  </body>
-  <footer>
+      <% })  %>
+  </main>
+  <%- include('../partials/footer.ejs') %>
 
-  </footer>
-  <script src="/js/app.js"></script>
 </body>
 </html>

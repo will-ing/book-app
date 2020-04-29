@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style.css"/>
-  <title>Find a Book</title>
+  <head>
+<%- include('../partials/head.ejs') %>
 </head>
+
 <body>
-  <header>
-    <h1>find a books</h1>
-  </header>
+  <%- include('../partials/header.ejs') %>
+
   <main>
     <form method="post" action="/search">
-    <div>
+    <div class="search">
       <input name="search" placeholder="search Terms">  
     </div>
-    <div>
+    <div class="labels">
       <label>
         <input type="radio" name="searchby" value="inauthor">
-        search By Author
+        Search By Author
       </label>
       <label>
         <input type="radio" name="searchby" value="intitle">
-        search By title
+        Search By Title
       </label>
-      <button type="submit">Find Books!</button>
     </div>
+    <button type="submit">Find Books!</button>
   </form>
   </main>
+  <%- include('../partials/footer.ejs') %>
+
+
 </body>
 </html>
