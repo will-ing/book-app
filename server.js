@@ -74,6 +74,11 @@ app.use( (err, req, res, next) => {
   res.status(500).send(err.message);
 })
 
+app.get('*', (req, res) => {
+  console.log(req);
+  res.status(404).send(`Page ${req.path} can't be found`)
+})
+
 
 /// start Server ///
 function startServer(){
