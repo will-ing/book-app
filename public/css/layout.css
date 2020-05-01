@@ -10,6 +10,24 @@ header {
   font-family: 'Comic Neue', cursive;
 }
 
+nav {
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+#search:hover {
+  background-color: slategray;
+}
+#bookshelf:hover {
+  background-color: slategray;
+}
+
+#menu:hover {
+  background-color: slategray;
+}
+
 .search {
   display: flex;
   justify-content: space-evenly;
@@ -20,9 +38,6 @@ main {
   background-color: teal;
 }
 
-div {
-  
-}
 
 
 input {
@@ -38,7 +53,7 @@ form {
 }
 
 button:hover {
-  background-color: olive;
+  background-color:slategray;
   transition: 200ms;
 }
 

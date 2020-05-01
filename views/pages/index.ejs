@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<head>
+  <%- include('./partials/head.ejs') %>
+</head>
 <body>
 
-  <main>
-    
-  </main>
+  <nav>
+    <%- include('./partials/navbar') %>
+  </nav>
 
+  <main>
+
+  <%- include('./partials/header.ejs') %>
+  <main>
+  
+      <% book_app.forEach( book => { %>
+        <div class="container">
+          <div class="title">
+            <%= book.title %>
+          </div> 
+          <img src=<%= book.image_url %> alt=""> 
+          <h3 class="author">
+           By:<%= book.author %>
+          </h3>
+          <p class="desc">
+            <%= book.descrip %>
+          </p>
+          <p class="isbn">
+            <%= book.isbn %>
+          </p>
+          <p class="amount">
+            $<%= book.amount %>
+          </p>
+          </div>
+          <% })  %>
+
+  </main>
+  <%- include('./partials/footer.ejs') %>
 </body>
+
 </html>

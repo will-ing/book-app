@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-<%- include('../partials/head.ejs') %>
+
+<head>
+  <%- include('../partials/head.ejs') %>
 </head>
 
 <body>
+  <nav>
+    <%- include('../partials/navbar') %>
+  </nav>
 
   <%- include('../partials/header.ejs') %>
 
 
   <main>
-    <form method="post" action="/search">
-    <div class="search">
-      <input name="search" placeholder="search Terms">  
-    </div>
-    <div class="labels">
-      <label>
-        <input type="radio" name="searchby" value="inauthor">
-        Search By Author
-      </label>
-      <label>
-        <input type="radio" name="searchby" value="intitle">
-        Search By Title
-      </label>
-    </div>
-    <button type="submit">Find Books!</button>
-  </form>
+    <form method="GET" action="/search">
+      <div class="search">
+        <input name="search" placeholder="search Terms">
+      </div>
+      <div class="labels">
+        <label>
+          <input type="radio" name="searchby" value="inauthor">
+          Search By Author
+        </label>
+        <label>
+          <input type="radio" name="searchby" value="intitle">
+          Search By Title
+        </label>
+      </div>
+      <button type="submit">Find Books!</button>
+    </form>
   </main>
 
   <%- include('../partials/footer.ejs') %>
 
 </body>
+
 </html>
