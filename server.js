@@ -5,41 +5,65 @@ require('dotenv').config();
 const express = require('express');
 const superagent = require('superagent')
 const PORT = process.env.PORT || 3000;
-
+const pg = require('pg');
 const app = express();
 
-// using express to run template
-app.set('view engine', 'ejs');
+const client = new pg.Client(process.env.DATABASE_URL)
+
+
 
 app.use(express.urlencoded({ extended: true }));
+
+
+// express setup
+app.set('view engine', 'ejs');
+
 
 app.use(express.static('./public'));
 
 
-// app.get('*', (req, res) => {
-//   console.log(req);
-//   res.status(404).send(`Page ${req.path} can't be found`)
-// })
 
-// route to index page
-app.get('/', (req, res) => {
-  try {
-    res.status(200).render('pages/index.ejs');
-  }
-  catch{
+
+// route handlers
+app.get('/', handleIndex);
+app.get('/searchForm' , handleSearchForm);
+app.post('/search', handleSearch);
+app.get('*', handle404);
+
+
+function handleIndex(req, res){
+  const SQL = 'SELECT * FROM books';
+  
+  try{
+    client.query(SQL)
+      .then(results => {
+        if(results.rows.length > 0){
+        res.status(200).render('pages/index.ejs', {books:results.rows});
+      }else{
+        res.status(200).render('pages/index.ejs')
+      }
+      })
+    }
+  catch{ 
     res.status(404).send(`Page ${req.path} can't be found`);
-  }
-})
+   }
+}
 
 // route to the search form page
-app.get('/searchForm', (req, res) => {
+
+function handleSearchForm(req, res){
+
+
   res.status(200).render('pages/searches/show.ejs')
-})
+}
 
 // This route is for the results
-app.post('/search', (req, res) => {
 
-  const url = 'https://www.googleapis.com/books/v1/volumes';
+
+
+function handleSearch(req,res){
+  let url = 'https://www.googleapis.com/books/v1/volumes';
+
   let queryObject = {
     q: `${req.body.searchby}:${req.body.search}`
   };
@@ -49,7 +73,7 @@ app.post('/search', (req, res) => {
       let books = results.body.items.map(book => new Book(book));
       res.status(200).render('pages/searches/new.ejs', {books})
     })
-})
+}
 
 function Book(data) {
   this.title = data.volumeInfo.title;
@@ -88,15 +112,23 @@ app.use((err, req, res, next) => {
   res.status(500).send(err.message);
 })
 
-app.get('*', (req, res) => {
+
+
+function handle404(){
+
   console.log(req);
   res.status(404).send(`Page ${req.path} can't be found`)
-})
+}
 
 
 /// start Server ///
-function startServer() {
+
+function startServer(PORT){
   app.listen(PORT, () => console.log(`server running on ${PORT}`));
 }
 
-startServer();
+client.connect()
+  .then( () => {
+    startServer(PORT);
+  })
+  .catch( error => console.error(error.message));
