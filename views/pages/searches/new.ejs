@@ -14,19 +14,31 @@
       <div class="title">
         <%= book.title %>
       </div> 
-      <img src=<%= book.img %> alt=""> 
+      <img src=<%= book.image_url %> alt=""> 
       <h3 class="author">
-       By:<%= book.author %>
+       By: <%= book.author %>
       </h3>
       <p class="desc">
-        <%= book.desc %>
+        <%= book.descrip %>
       </p>
       <p class="isbn">
         <%= book.isbn %>
       </p>
       <p class="amount">
-        $<%= book.amount %>
+        $ <%= book.amount %>
       </p>
+      <form method="POST" action="/save">
+        <input type="hidden" name="title" value="<%= book.title %>" />
+        <input type="hidden" name="image_url" value="<%= book.image_url %>" />
+        <input type="hidden" name="author" value="<%= book.author %>" />
+        <input type="hidden" name="descrip" value="<%= book.descrip %>" />
+        <input type="hidden" name="isbn" value="<%= book.isbn %>" />
+        <input type="hidden" name="amount" value="<%= book.amount %>" />
+
+
+        <button type="submit">Save Book</button>
+      </form>
+      
     </div>
       <% })  %>
 

@@ -11,47 +11,63 @@ const app = express();
 const client = new pg.Client(process.env.DATABASE_URL)
 
 
-
 app.use(express.urlencoded({ extended: true }));
 
 
 // express setup
 app.set('view engine', 'ejs');
-
-
 app.use(express.static('./public'));
-
-
 
 
 // route handlers
 app.get('/', handleIndex);
-app.get('/searchForm' , handleSearchForm);
-app.post('/search', handleSearch);
+app.get('/searchForm', handleSearchForm);
+app.get('/search', handleSearch);
+app.post('/save', handleSave);
 app.get('*', handle404);
 
 
-function handleIndex(req, res){
+function handleIndex(req, res) {
   const SQL = 'SELECT * FROM books';
-  
-  try{
-    client.query(SQL)
-      .then(results => {
-        if(results.rows.length > 0){
-        res.status(200).render('pages/index.ejs', {books:results.rows});
-      }else{
+
+  client.query(SQL)
+    .then(results => {
+      if (results.rows.length > 0) {
+        res.status(200).render('pages/index.ejs', { book_app: results.rows });
+      } else {
         res.status(200).render('pages/index.ejs')
       }
       })
-    }
-  catch{ 
-    res.status(404).send(`Page ${req.path} can't be found`);
-   }
+    .catch( error => {
+      res.status(404).send(`Page ${req.error} can't be found`);
+    })
+  }
+
+
+
+function handleSave(req, res) {
+  let SQL = `
+    INSERT INTO books(author, title, isbn, image_url, descrip, bookshelf)
+    VALUES($1, $2, $3, $4, $5, $6)
+    `;
+  let VALUES = [
+    req.body.author,
+    req.body.title,
+    req.body.isbn,
+    req.body.image_url,
+    req.body.descrip,
+    req.body.amount,
+  ]
+  console.log(VALUES)
+  client.query(SQL, VALUES)
+    .then(results => {
+      res.status(200).redirect('/');
+    })
 }
 
 // route to the search form page
 
-function handleSearchForm(req, res){
+function handleSearchForm(req, res) {
 
 
   res.status(200).render('pages/searches/show.ejs')
@@ -60,8 +76,7 @@ function handleSearchForm(req, res){
 // This route is for the results
 
 
-
-function handleSearch(req,res){
+function handleSearch(req, res) {
   let url = 'https://www.googleapis.com/books/v1/volumes';
 
   let queryObject = {
@@ -71,7 +86,7 @@ function handleSearch(req,res){
     .query(queryObject)
     .then(results => {
       let books = results.body.items.map(book => new Book(book));
-      res.status(200).render('pages/searches/new.ejs', {books})
+      res.status(200).render('pages/searches/new.ejs', { books })
     })
 }
 
@@ -79,9 +94,9 @@ function Book(data) {
   this.title = data.volumeInfo.title;
   this.amount = data.saleInfo.listPrice ? data.saleInfo.listPrice.amount : 'no price listed';
   this.author = data.volumeInfo.authors;
-  this.desc = data.volumeInfo.description || 'Sorry just the cover'
-  this.isbn = data.volumeInfo.industryIdentifiers[0].identifier || 'does not exist'
-  this.img = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
+  this.descrip = data.volumeInfo.description || 'Sorry just the cover'
+  // this.isbn = data.volumeInfo.industryIdentifiers[0].identifier === 'undefined' ? data.volumeInfo.industryIdentifiers[0].identifier : 'does not exist'
+  this.image_url = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
 }
 
 //Function to save books to db and have it render in index ejs and count how many books are in db
@@ -114,7 +129,7 @@ app.use((err, req, res, next) => {
 
 
 
-function handle404(){
+function handle404() {
 
   console.log(req);
   res.status(404).send(`Page ${req.path} can't be found`)
@@ -123,12 +138,12 @@ function handle404(){
 
 /// start Server ///
 
-function startServer(PORT){
+function startServer(PORT) {
   app.listen(PORT, () => console.log(`server running on ${PORT}`));
 }
 
 client.connect()
-  .then( () => {
+  .then(() => {
     startServer(PORT);
   })
-  .catch( error => console.error(error.message));
+  .catch(error => console.error(error.message));
