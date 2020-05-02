@@ -7,12 +7,13 @@ const superagent = require('superagent')
 const PORT = process.env.PORT || 3000;
 const pg = require('pg');
 const app = express();
+const methodOverride = require('method-override')
 
 const client = new pg.Client(process.env.DATABASE_URL)
 
 
 app.use(express.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'))
 
 // express setup
 app.set('view engine', 'ejs');
@@ -72,8 +73,10 @@ function handleSearchForm(req, res) {
 function handleSearch(req, res) {
   let url = 'https://www.googleapis.com/books/v1/volumes';
   let queryObject = {
-    q: `${req.body.searchby}:${req.body.search}`
+    q: `${req.query.searchby}:${req.query.search}`,
   };
+  
+  console.log(queryObject)
   superagent.get(url)
     .query(queryObject)
     .then(results => {

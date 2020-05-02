@@ -96,7 +96,9 @@ img {
   text-align: center;
   font-size: 15px;
   border: 5px solid black;
-  
+  height: 150px;
+  overflow: scroll;
+  background-color: gainsboro;
 }
 
 .isbn {
