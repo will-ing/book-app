@@ -32,11 +32,7 @@ function handleIndex(req, res) {
 
   client.query(SQL)
     .then(results => {
-      if (results.rows.length > 0) {
         res.status(200).render('pages/index.ejs', { book_app: results.rows });
-      } else {
-        res.status(200).render('pages/index.ejs')
-      }
       })
     .catch( error => {
       res.status(404).send(`Page ${req.error} can't be found`);
@@ -67,7 +63,6 @@ function handleSave(req, res) {
 // route to the search form page
 
 function handleSearchForm(req, res) {
-
   res.status(200).render('pages/searches/show.ejs')
 }
 
@@ -111,7 +106,6 @@ app.use( (err, req, res, next) => {
 
 
 function handle404() {
-
   console.log(req);
   res.status(404).send(`Page ${req.path} can't be found`)
 }
