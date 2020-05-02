@@ -5,10 +5,17 @@ CREATE TABLE books (
   author VARCHAR(255),
   title VARCHAR(255),
   isbn VARCHAR(255),
+<<<<<<< HEAD
   image_url VARCHAR(255),
   descrip VARCHAR(255),
+=======
+  image_url TEXT,
+  descrip TEXT,
+>>>>>>> 5d439c841d17cc6844f2f9392ec3e9256cfd7527
   bookshelf VARCHAR(255)
 );
+
+
 
 
 -- in postgres
