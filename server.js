@@ -58,7 +58,6 @@ function handleSave(req, res) {
     req.body.descrip,
     req.body.amount,
   ]
-  console.log(VALUES)
   client.query(SQL, VALUES)
     .then(results => {
       res.status(200).redirect('/');
