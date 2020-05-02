@@ -12,15 +12,11 @@ const client = new pg.Client(process.env.DATABASE_URL)
 
 
 
-app.use(express.urlencoded({ extended: true }));
-
-
 // express setup
 app.set('view engine', 'ejs');
+app.use( express.urlencoded({extended:true}));
 
-
-app.use(express.static('./public'));
-
+app.use( express.static('./public') );
 
 
 
@@ -53,25 +49,23 @@ function handleIndex(req, res){
 
 function handleSearchForm(req, res){
 
-
   res.status(200).render('pages/searches/show.ejs')
 }
 
 // This route is for the results
 
-
-
 function handleSearch(req,res){
   let url = 'https://www.googleapis.com/books/v1/volumes';
-
   let queryObject = {
     q: `${req.body.searchby}:${req.body.search}`
-  };
-  superagent.get(url)
-    .query(queryObject)
-    .then(results => {
-      let books = results.body.items.map(book => new Book(book));
-      res.status(200).render('pages/searches/new.ejs', {books})
+  }
+
+   superagent.get(url)
+    .query( queryObject )
+    .then( results => {
+      let books = results.body.items.map(book => new Book(book))
+      // console.log(books)
+      res.status(200).render('pages/searches/new.ejs', {books: books})
     })
 }
 
@@ -84,7 +78,40 @@ function Book(data) {
   this.img = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
 }
 
+// url('https://www.googleapis.com/books/v1/volumes?q=inauthor:${author}')
+// https://developers.google.com/books/docs/v1/using
+
+
+/// handling errors ///
+
+/* use throw New Error('string') on to catch all the errors you expect */
+app.use( (err, req, res, next) => {
+  console.error(err)
+  res.status(500).send(err.message);
+})
+
+
+
+function handle404(){
+  console.log(req);
+  res.status(404).send(`Page ${req.path} can't be found`)
+}
+
+
+/// start Server ///
+function startServer(PORT){
+  app.listen(PORT, () => console.log(`server running on ${PORT}`));
+}
+
+client.connect()
+  .then( () => {
+    startServer(PORT);
+  })
+  .catch( error => console.error(error.message));
+
 //Function to save books to db and have it render in index ejs and count how many books are in db
+
+// https://developers.google.com/books/docs/v1/using	
 
 // Add en endpoint for a GET request to /books/:id the callback should allow client to make a request for a singular book
 
@@ -98,37 +125,4 @@ function Book(data) {
 
 //If you have not already done so when writing your server file, move your SQL queries and view rendering into callbacks. Reference the appropriate callback in each route.
 
-//
 
-
-
-
-
-/// handling errors ///
-
-/* use throw New Error('string') on to catch all the errors you expect */
-app.use((err, req, res, next) => {
-  console.error(err)
-  res.status(500).send(err.message);
-})
-
-
-
-function handle404(){
-
-  console.log(req);
-  res.status(404).send(`Page ${req.path} can't be found`)
-}
-
-
-/// start Server ///
-
-function startServer(PORT){
-  app.listen(PORT, () => console.log(`server running on ${PORT}`));
-}
-
-client.connect()
-  .then( () => {
-    startServer(PORT);
-  })
-  .catch( error => console.error(error.message));
