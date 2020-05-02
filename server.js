@@ -32,11 +32,7 @@ function handleIndex(req, res) {
 
   client.query(SQL)
     .then(results => {
-      if (results.rows.length > 0) {
         res.status(200).render('pages/index.ejs', { book_app: results.rows });
-      } else {
-        res.status(200).render('pages/index.ejs')
-      }
       })
     .catch( error => {
       res.status(404).send(`Page ${req.error} can't be found`);
@@ -58,7 +54,6 @@ function handleSave(req, res) {
     req.body.descrip,
     req.body.amount,
   ]
-  console.log(VALUES)
   client.query(SQL, VALUES)
     .then(results => {
       res.status(200).redirect('/');
@@ -68,8 +63,6 @@ function handleSave(req, res) {
 // route to the search form page
 
 function handleSearchForm(req, res) {
-
-
   res.status(200).render('pages/searches/show.ejs')
 }
 
@@ -78,7 +71,6 @@ function handleSearchForm(req, res) {
 
 function handleSearch(req, res) {
   let url = 'https://www.googleapis.com/books/v1/volumes';
-
   let queryObject = {
     q: `${req.body.searchby}:${req.body.search}`
   };
@@ -99,30 +91,14 @@ function Book(data) {
   this.image_url = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
 }
 
-//Function to save books to db and have it render in index ejs and count how many books are in db
-
-// Add en endpoint for a GET request to /books/:id the callback should allow client to make a request for a singular book
-
-// create a new view to display the details of single book
-
-//Build in the ability for the user to return to the main list of all books, from a book detail page.
-
-//Display each book from the API 
-
-//This form should submit the form data as a POST request to `/books`. The corresponding callback should include the necessary logic to add the book to the database.
-
-//If you have not already done so when writing your server file, move your SQL queries and view rendering into callbacks. Reference the appropriate callback in each route.
-
-//
-
-
-
+// url('https://www.googleapis.com/books/v1/volumes?q=inauthor:${author}')
+// https://developers.google.com/books/docs/v1/using
 
 
 /// handling errors ///
 
 /* use throw New Error('string') on to catch all the errors you expect */
-app.use((err, req, res, next) => {
+app.use( (err, req, res, next) => {
   console.error(err)
   res.status(500).send(err.message);
 })
@@ -130,7 +106,6 @@ app.use((err, req, res, next) => {
 
 
 function handle404() {
-
   console.log(req);
   res.status(404).send(`Page ${req.path} can't be found`)
 }
