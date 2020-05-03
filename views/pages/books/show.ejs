@@ -5,5 +5,11 @@
   <nav>
     <%- include('../partials/navbar') %>
 	</nav>
-	
+	<main>
+    <%- include('../partials/edit.ejs') %>
+    <form method="post" action="/update-book/<%= book_app.id %>?_method=put">
+      
+      <button type="submit">Update</button>
+    </form>
+  </main>
 	<%- include('../partials/footer.ejs') %>
