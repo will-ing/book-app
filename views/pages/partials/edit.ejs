@@ -1,0 +1,8 @@
+<form method="post" action="/update-book/<%= book_app.id %>?_method=put" id="editForm">
+  <input type="text" value="<%= book_app.title %>">
+  <input type="text" value="<%= book_app.author %>">
+  <input type="text" value="<%= book_app.descrip %>" class="desc">
+  <input type="text" value="<%= book_app.isbn %>">
+  <input type="text" value="$ <%= book_app.amount %>" >
+  <button type="submit">Update</button>
+</form>

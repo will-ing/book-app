@@ -109,3 +109,7 @@ img {
   text-align: center;
   font-size: 20px;
 }
+
+#editForm {
+  display: none;
+}

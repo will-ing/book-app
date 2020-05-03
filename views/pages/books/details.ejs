@@ -5,5 +5,33 @@
   <nav>
     <%- include('../partials/navbar') %>
 	</nav>
-	
+	<main>
+    <div class="container">
+      
+      <div class="title">
+        <%= book_app.title %>
+      </div> 
+      <img src="<%= book_app.image_url %>"/>
+      <h3 class="author">
+       By:<%= book_app.author %>
+      </h3>
+      <p class="desc">
+        <%= book_app.descrip %>
+      </p>
+      <p class="isbn">
+        <%= book_app.isbn %>
+      </p>
+      <p class="amount">
+        $<%= book_app.amount %>
+      </p>
+    
+        <button type="submit" id='showForm'>Update Details</button>
+   
+      
+      <form method="post" action="/delete/<%= book_app.id %>?_method=delete">
+        <button type="submit">Delete Book</button>
+      </form>
+      </div>
+    <%- include('../partials/edit.ejs') %>
+  </main>
 	<%- include('../partials/footer.ejs') %>

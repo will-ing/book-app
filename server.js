@@ -25,8 +25,51 @@ app.get('/', handleIndex);
 app.get('/searchForm', handleSearchForm);
 app.get('/search', handleSearch);
 app.post('/save', handleSave);
+app.get('/details/:bookId', handleDetails);
+app.put('/update-book/:bookId', handleUpdate);
+app.delete('/delete/:bookId', handleDelete);
 app.get('*', handle404);
 
+
+function handleUpdate(req, res){
+  let SQL = `UPDATE books SET author = $1, title = $2, isbn = $3, image_url= $4, descrip = $5, bookshelf = $6 WHERE id = $7;`
+  let VALUES = [
+    req.body.author,
+    req.body.title,
+    req.body.isbn,
+    req.body.image_url,
+    req.body.descrip,
+    req.body.amount,
+    req.params.bookId
+  ]
+
+  client.query(SQL, VALUES)
+    .then(results => {
+      res.status(200).redirect(`/`)
+    })
+}
+
+function handleDelete(req, res){
+  let id = req.params.bookId
+  let SQL = `DELETE FROM books WHERE id = $1`;
+  let VALUES = [id];
+
+  client.query(SQL, VALUES)
+    .then(results => {
+      res.status(200).redirect('/');
+    })
+}
+
+function handleDetails(req, res) {
+  const SQL = `SELECT * FROM books WHERE id = $1 `;
+  const VALUES = [req.params.bookId];
+  
+  client.query(SQL, VALUES)
+    .then(results => {
+      res.status(200).render('pages/books/details.ejs', { book_app: results.rows[0]})
+      
+    })
+}
 
 function handleIndex(req, res) {
   const SQL = 'SELECT * FROM books';
@@ -39,8 +82,6 @@ function handleIndex(req, res) {
       res.status(404).send(`Page ${req.error} can't be found`);
     })
   }
-
-
 
 function handleSave(req, res) {
   let SQL = `
@@ -89,10 +130,10 @@ function Book(data) {
   this.title = data.volumeInfo.title;
   this.amount = data.saleInfo.listPrice ? data.saleInfo.listPrice.amount : 'no price listed';
   this.author = data.volumeInfo.authors;
-  this.descrip = data.volumeInfo.description || 'Sorry just the cover'
-  // this.isbn = data.volumeInfo.industryIdentifiers[0].identifier === 'undefined' ? data.volumeInfo.industryIdentifiers[0].identifier : 'does not exist'
-  this.image_url = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg'
-}
+  this.descrip = data.volumeInfo.description || 'Sorry just the cover';
+  this.isbn = data.volumeInfo.industryIdentifiers[0].identifier || 'does not exist';
+  this.image_url = data.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpg';
+};
 
 // url('https://www.googleapis.com/books/v1/volumes?q=inauthor:${author}')
 // https://developers.google.com/books/docs/v1/using
@@ -108,8 +149,7 @@ app.use( (err, req, res, next) => {
 
 
 
-function handle404() {
-  console.log(req);
+function handle404(req, res) {
   res.status(404).send(`Page ${req.path} can't be found`)
 }
 

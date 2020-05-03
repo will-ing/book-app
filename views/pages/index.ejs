@@ -23,20 +23,21 @@
           <h3 class="author">
            By:<%= book.author %>
           </h3>
-          <p class="desc">
-            <%= book.descrip %>
-          </p>
+          <form method="get" action="/details/<%= book.id %>" >
+            
+            <button type="submit">Go to Details!</button>
+          </form>
           <p class="isbn">
             <%= book.isbn %>
           </p>
-          <p class="amount">
-            $<%= book.amount %>
-          </p>
-          </div>
+        </div>
           <% })  %>
           
   </main>
   <%- include('./partials/footer.ejs') %>
+
+  
+
 </body>
 
 </html>
